@@ -1,0 +1,21 @@
+import numpy as np
+from game import Game
+from agent import Agent
+
+class RLController(object):
+
+    def __init__(self):
+        self.env = Game(memory_len = 5, money = 100)
+        self.agent = Agent()
+
+        self.max_play_episodes = 10000
+
+    def run(self):
+
+        agent_action = agent.get_action()
+        game_action = agent.get_action()
+        
+        agent.saw_action(agent_action)
+        agent.saw_action(env.queue_enemy, env.queue_self)
+
+        agent.meditate()
