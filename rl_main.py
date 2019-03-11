@@ -2,6 +2,8 @@ import numpy as np
 from game import Game
 from agent import Agent
 
+N = 100000
+
 class RLController(object):
 
     def __init__(self):
@@ -19,3 +21,13 @@ class RLController(object):
         agent.saw_action(env.queue_enemy, env.queue_self)
 
         agent.meditate()
+
+    def start_everything(self):
+        for i in range(N):
+            self.run():
+
+            if i % 100 = 0:
+                pass
+                # print winrate in last 100 game
+
+
