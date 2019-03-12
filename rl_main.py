@@ -3,6 +3,7 @@ from game import Game
 from agent import Agent
 
 N = 100000
+IF_VERBO = True
 
 class RLController(object):
 
@@ -17,6 +18,9 @@ class RLController(object):
         agent_action = agent.get_action()
         game_action = agent.get_action()
         
+        if IF_VERBO:
+            print("%d vs %d" % (agent_action, game_action))
+
         agent.saw_action(agent_action)
         agent.saw_action(env.queue_enemy, env.queue_self)
 
@@ -24,10 +28,13 @@ class RLController(object):
 
     def start_everything(self):
         for i in range(N):
-            self.run():
+            self.run()
 
-            if i % 100 = 0:
+            if i % 100 == 0:
                 pass
                 # print winrate in last 100 game
 
 
+if __name__ == '__main__':
+    controller = RLController()
+    controller.start_everything()

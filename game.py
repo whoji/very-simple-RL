@@ -13,8 +13,8 @@ class Game(object):
         self.money_enemy = money
 
         # initialize the queue
-        self.queue_self = random.choice([-1,0,1], memory_len)
-        self.queue_enemy = random.choice([-1,0,1], memory_len)
+        self.queue_self = [random.choice([-1,0,1]) for _ in range(memory_len)]
+        self.queue_enemy = [random.choice([-1,0,1]) for _ in range(memory_len)]
 
 
     def get_action(self):
@@ -46,11 +46,15 @@ class Game(object):
     @staticmethod
     def get_reward(a,b):
         d = {}
-        d[][] = 1
-        d[][] = 1
-        d[][] = 1
-        d[][] = 1
-        d[][] = 1
+        d[-1][-1] = 0
+        d[-1][0] = -1
+        d[-1][1] = 1
+        d[-0][-1] = 1
+        d[-0][0] = -0
+        d[-0][1] = -1
+        d[1][-1] = -1
+        d[1][0] = 1
+        d[1][1] = 0
 
         return d[a][b]
 

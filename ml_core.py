@@ -1,5 +1,5 @@
 import numpy as np
-import pytorch
+import torch
 
 
 class Network(object):
@@ -24,12 +24,12 @@ class Network(object):
         pass
 
 class Trainer(object):
-    def __init__(self, x, y):
+    def __init__(self):
         self.net = Network(2, 10, 10, 3)
         self.optimizer = torch.optim.SGD(net.parameters(), lr=0.02)
         self.loss_func = torch.nn.CrossEntropyLoss()
-        self.x = x
-        self.y = y
+        self.x = None
+        self.y = None
 
     def train(self, epochs = 100):
         for t in range(epochs):
@@ -57,3 +57,11 @@ class ExpReplay(object):
 
     def self_balance(self):
         pass
+
+    def data_transform(self, x, y, r):
+        #transform into pytorch data
+        x = torch.FloatTensor(x)
+        y = torch.FloatTensor(y)
+        r = r
+        return x, y, r
+

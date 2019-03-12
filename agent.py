@@ -3,7 +3,7 @@ from ml_core import Network, ExpReplay
 
 class Agent(object):
     """This is the player"""
-    def __init__(self, arg):
+    def __init__(self):
         super(Agent, self).__init__()
         self.episodes = 0
         self.money = 0
