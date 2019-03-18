@@ -21,7 +21,7 @@ class RLController(object):
         if IF_VERBO:
             print("%d vs %d" % (agent_action, game_action))
 
-        agent.saw_action(agent_action)
+        game.saw_action(agent_action)
         agent.saw_action(env.queue_enemy, env.queue_self)
 
         agent.meditate()
