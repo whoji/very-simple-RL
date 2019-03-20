@@ -1,8 +1,9 @@
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 
-class Network(object):
+class Network(torch.nn.Module):
     """docstring for Trainer"""
     def __init__(self, n_feature, n_hidden_l1, n_hidden_l2, n_output):
         super(Network, self).__init__()
@@ -13,7 +14,7 @@ class Network(object):
        
     def forward(self, x):
         a1 = F.relu(self.l1(x))
-        a2 = F.relu(self.l2(x))
+        a2 = F.relu(self.l2(a1))
         o = self.out(a2)
         return x
         
@@ -26,19 +27,19 @@ class Network(object):
 class Trainer(object):
     def __init__(self):
         self.net = Network(2, 10, 10, 3)
-        self.optimizer = torch.optim.SGD(net.parameters(), lr=0.02)
+        self.optimizer = torch.optim.SGD(self.net.parameters(), lr=0.02)
         self.loss_func = torch.nn.CrossEntropyLoss()
         self.x = None
         self.y = None
 
     def train(self, epochs = 100):
         for t in range(epochs):
-            out = self.net(x)
-            loss = self.loss_func(out, y)
+            out = self.net(self.x)
+            loss = self.loss_func(out, self.y)
 
-            optimizer.zero_grad()   # clear gradients for next train
-            loss.backward()         # backpropagation, compute gradients
-            optimizer.step()        # apply gradients
+            self.optimizer.zero_grad()   # clear gradients for next train
+            loss.backward()              # backpropagation, compute gradients
+            self.optimizer.step()        # apply gradients
 
 
 class ExpReplay(object):
