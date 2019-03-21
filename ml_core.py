@@ -16,13 +16,14 @@ class Network(torch.nn.Module):
         a1 = F.relu(self.l1(x))
         a2 = F.relu(self.l2(a1))
         o = self.out(a2)
-        return x
-        
+        return o
+            
     def train(self):
         pass
 
     def predict(self):
         pass
+
 
 class Trainer(object):
     def __init__(self):
@@ -31,8 +32,9 @@ class Trainer(object):
         self.loss_func = torch.nn.CrossEntropyLoss()
         self.x = None
         self.y = None
+        self.accuracy = 0.0
 
-    def train(self, epochs = 100):
+    def train(self, epochs=100, verbose=True):
         for t in range(epochs):
             out = self.net(self.x)
             loss = self.loss_func(out, self.y)
@@ -40,6 +42,14 @@ class Trainer(object):
             self.optimizer.zero_grad()   # clear gradients for next train
             loss.backward()              # backpropagation, compute gradients
             self.optimizer.step()        # apply gradients
+
+            if verbose and t % 10 == 0:
+                # plot and show learning process
+                prediction = torch.max(out, 1)[1]
+                pred_y = prediction.data.numpy()
+                target_y = self.y.data.numpy()
+                self.accuracy = float((pred_y == target_y).astype(int).sum()) / float(target_y.size)
+                print('Accuracy=%.2f' % self.accuracy)
 
 
 class ExpReplay(object):

@@ -24,34 +24,9 @@ class TestMLCore(unittest.TestCase):
         self.trainer.x = self.dataset['x']
         self.trainer.y = self.dataset['y']
 
+        self.assertTrue(self.trainer.accuracy ==  0.0)
         self.trainer.train(100)
-
-
-
-    # def test_generate_action(self):
-    #     # testing getting action from the game
-    #     a = self.game.get_action()
-    #     self.assertEqual(a, -1)
-    #     self.assertEqual(self.game.queue_self, [0,1,-1,1,1,-1][1:]+[a])
-
-    #     a = self.game.get_action()
-    #     self.assertEqual(a, 0)
-    #     self.assertEqual(self.game.queue_self, [0,1,-1,1,1,-1][2:]+[-1,0])
-
-    # def test_intake_action(self):
-    #     # testing game seeing an action (agent's action)
-    #     a = 0
-    #     self.game.saw_action(a)
-    #     self.assertEqual(self.game.queue_enemy,  [0,0,-1,0,0,-1][1:] + [a])
-    #     reward = Game.get_reward(-1, a)
-    #     self.assertEqual(self.game.money_self, 100+reward)
-
-    #     a = 0
-    #     self.game.saw_action(a)
-    #     self.assertEqual(self.game.queue_enemy,  [0,0,-1,0,0,-1][2:] + [0,0])
-    #     reward_2 = Game.get_reward(-1, a)
-    #     self.assertEqual(self.game.money_self, 100+reward+reward_2)
-    #     self.assertEqual(self.game.money_enemy, 100-reward-reward_2)
+        self.assertTrue(self.trainer.accuracy >  0.9)
 
 
 if __name__ == '__main__':
