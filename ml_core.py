@@ -53,26 +53,32 @@ class Trainer(object):
 
 
 class ExpReplay(object):
-    def __init__(q_size):
+    def __init__(self, q_size_max):
         self.q = []
-        self.n = q_size
+        self.q_size_max = q_size_max
 
-    def add(self):
-        pass
+    def add(self, x, a, r):
+        assert len(self.q) < self.q_size_max
+        one_data_pt = (x, a, r)
+        self.q.append(one_data_pt)
+
+    def sample(self, sample_size = 1):
+        # sort the q by the r val, and sample the best ones
+        assert sample_size <= len(self.q) 
+        sorted_q = sorted(self.q, key = lamda x: -x[2])
+        return sorted_q[:sample_size]
 
     def remove_from_q(self):
-        pass
-
-    def sample(self, sample_size):
         pass
 
     def self_balance(self):
         pass
 
-    def data_transform(self, x, y, r):
+    def data_transform(self, x, a, r):
         #transform into pytorch data
         x = torch.FloatTensor(x)
-        y = torch.FloatTensor(y)
+        a = torch.FloatTensor(a)
         r = r
-        return x, y, r
+        return x, a, r
+
 
