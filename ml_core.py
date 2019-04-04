@@ -15,19 +15,28 @@ class Network(torch.nn.Module):
     def forward(self, x):
         a1 = F.relu(self.l1(x))
         a2 = F.relu(self.l2(a1))
-        o = self.out(a2)
+        o  = torch.sigmoid(self.out(a2))
         return o
             
     def train(self):
         pass
 
-    def predict(self):
-        pass
+    def predict(self, x):
+        y_hat = self.forward(x)
+        return round(y_hat.detach().numpy()[0])
+
+    @staticmethod
+    def to_torch_tensor(x):
+        return  torch.FloatTensor(x)
 
 
 class Trainer(object):
-    def __init__(self):
-        self.net = Network(2, 10, 10, 3)
+    def __init__(self, net):
+        if net:
+            self.net = net
+        else:
+            self.net = Network(2, 10, 10, 3)
+
         self.optimizer = torch.optim.SGD(self.net.parameters(), lr=0.02)
         self.loss_func = torch.nn.CrossEntropyLoss()
         self.x = None
@@ -51,9 +60,12 @@ class Trainer(object):
                 self.accuracy = float((pred_y == target_y).astype(int).sum()) / float(target_y.size)
                 print('Accuracy=%.2f' % self.accuracy)
 
+    def inference(self, x):
+        return self.net(x)
+
 
 class ExpReplay(object):
-    def __init__(self, q_size_max):
+    def __init__(self, q_size_max = 1000):
         self.q = []
         self.q_size_max = q_size_max
 

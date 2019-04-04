@@ -6,8 +6,8 @@ from ml_core import Network, Trainer, ExpReplay
 class TestMLCore(unittest.TestCase):
     """docstring for ClassName"""
     def setUp(self):
-        self.net = Network(4,3,2,2)
-        self.trainer = Trainer()
+        self.net = Network(2,4,4,3)
+        self.trainer = Trainer(self.net)
 
         # make fake data
         n_data = torch.ones(100, 2)
@@ -20,12 +20,14 @@ class TestMLCore(unittest.TestCase):
         self.dataset = {'x':x, 'y':y}
 
     def test_network(self):
-        self.net = Network(4,3,2,2)
+        self.net = Network(2,4,4,3)
+        self.trainer = Trainer(self.net)
+
         self.trainer.x = self.dataset['x']
         self.trainer.y = self.dataset['y']
 
         self.assertTrue(self.trainer.accuracy ==  0.0)
-        self.trainer.train(100)
+        self.trainer.train(1000)
         self.assertTrue(self.trainer.accuracy >  0.9)
 
 
