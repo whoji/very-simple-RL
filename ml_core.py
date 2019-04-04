@@ -65,7 +65,7 @@ class ExpReplay(object):
     def sample(self, sample_size = 1):
         # sort the q by the r val, and sample the best ones
         assert sample_size <= len(self.q) 
-        sorted_q = sorted(self.q, key = lamda x: -x[2])
+        sorted_q = sorted(self.q, key = lambda x: -x[2])
         return sorted_q[:sample_size]
 
     def remove_from_q(self):
