@@ -38,12 +38,14 @@ class Trainer(object):
             self.net = Network(2, 10, 10, 3)
 
         self.optimizer = torch.optim.SGD(self.net.parameters(), lr=0.02)
-        self.loss_func = torch.nn.CrossEntropyLoss()
+        self.loss_func = torch.nn.CrossEntropyLoss() # MSELoss
         self.x = None
         self.y = None
         self.accuracy = 0.0
 
     def train(self, epochs=100, verbose=True):
+        # assert self.x is pytorch tensor of good shape
+        # assert self.y is pytorch tensor of good shape
         for t in range(epochs):
             out = self.net(self.x)
             loss = self.loss_func(out, self.y)
@@ -69,6 +71,9 @@ class ExpReplay(object):
         self.q = []
         self.q_size_max = q_size_max
 
+    def reset(self):
+        self.q = []
+
     def add(self, x, a, r):
         assert len(self.q) < self.q_size_max
         one_data_pt = (x, a, r)
@@ -79,6 +84,15 @@ class ExpReplay(object):
         assert sample_size <= len(self.q) 
         sorted_q = sorted(self.q, key = lambda x: -x[2])
         return sorted_q[:sample_size]
+
+    def sample_positive(self):
+        ret_x = [d[0] for d in self.q if d[2] > 0]
+        ret_y = [d[1] for d in self.q if d[2] > 0]
+        print(ret_y)
+        import pdb; pdb.set_trace()
+        ret_x = torch.stack(ret_x)
+        ret_y = torch.LongTensor(ret_y)
+        return ret_x, ret_y
 
     def remove_from_q(self):
         pass

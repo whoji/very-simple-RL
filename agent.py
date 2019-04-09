@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from ml_core import Network, ExpReplay
+from ml_core import Network, ExpReplay, Trainer
 
 class Agent(object):
     """This is the player"""
@@ -13,6 +13,7 @@ class Agent(object):
         self.queue_enemy = []
         self.net = Network(memory_len*2,5,3,1)
         self.exp = ExpReplay()
+        self.trainer = Trainer(self.net)
 
         # initialize the queue
         self.queue_self = [random.choice([-1,0,1]) for _ in range(memory_len)]
@@ -30,7 +31,11 @@ class Agent(object):
         # get action from the trainer
         x = self.get_x()
         a = self.net.predict(x)
+        a = self.random_action(a)
         return a
+
+    def random_action(self, a):
+        return random.choice([-1,0,1,a,a])
 
     def take_action(self, a):
         # also take the action to the self.queue_self
@@ -43,7 +48,7 @@ class Agent(object):
         self.queue_enemy = game_actions
 
     def need_train(self):
-        if len(self.exp.q) == self.exp.q_size:
+        if len(self.exp.q) == self.exp.q_size_max:
             return True
         else:
             return False
@@ -52,12 +57,38 @@ class Agent(object):
         # decide if we need to train the model
         # if yes. also train itself during this meditation period
 
-        raise NotImplementedError
+        x = self.get_x()
+        a = self.queue_self[-1]
+        r = self.get_reward(self.queue_self[-1], self.queue_enemy[-1])
         self.exp.add(x, a, r)
 
         # if need train
         if not self.need_train():
             return 0
+        else:
+            # train the network
+            ret_x, ret_y = self.exp.sample_positive()
+            self.trainer.x, self.trainer.y = ret_x, ret_y
+            # import pdb; pdb.set_trace()
+            self.trainer.train()
+            self.exp.reset()
+            return 1
 
-        # train the network
-        self.net.train()
+
+    @staticmethod
+    def get_reward(a,b):
+        d = {}
+        d[-1] = {}
+        d[0] = {}
+        d[1] = {}
+        d[-1][-1] = 0
+        d[-1][0] = -1
+        d[-1][1] = 1
+        d[-0][-1] = 1
+        d[-0][0] = -0
+        d[-0][1] = -1
+        d[1][-1] = -1
+        d[1][0] = 1
+        d[1][1] = 0
+
+        return d[a][b]
