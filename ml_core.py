@@ -88,8 +88,7 @@ class ExpReplay(object):
     def sample_positive(self):
         ret_x = [d[0] for d in self.q if d[2] > 0]
         ret_y = [d[1] for d in self.q if d[2] > 0]
-        print(ret_y)
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         ret_x = torch.stack(ret_x)
         ret_y = torch.LongTensor(ret_y)
         return ret_x, ret_y

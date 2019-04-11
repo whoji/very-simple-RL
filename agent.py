@@ -11,20 +11,19 @@ class Agent(object):
         self.money = money
         self.queue_self = []
         self.queue_enemy = []
-        self.net = Network(memory_len*2,5,3,1)
+        self.net = Network(memory_len*2,5,3,3)
         self.exp = ExpReplay()
         self.trainer = Trainer(self.net)
 
         # initialize the queue
-        self.queue_self = [random.choice([-1,0,1]) for _ in range(memory_len)]
-        self.queue_enemy = [random.choice([-1,0,1]) for _ in range(memory_len)]
+        self.queue_self = [random.choice([0,1,2]) for _ in range(memory_len)]
+        self.queue_enemy = [random.choice([0,1,2]) for _ in range(memory_len)]
         
     def get_x(self):
         # get the x in good format for network (trainer)
-        print(self.queue_self)
-        print(self.queue_enemy)
-        # raise NotImplementedError
-        print(self.queue_self+self.queue_enemy)
+        # print(self.queue_self)
+        # print(self.queue_enemy)
+        # print(self.queue_self+self.queue_enemy)
         return self.net.to_torch_tensor(self.queue_self+self.queue_enemy)
 
     def get_action(self):
@@ -35,7 +34,7 @@ class Agent(object):
         return a
 
     def random_action(self, a):
-        return random.choice([-1,0,1,a,a])
+        return random.choice([0,1,2,a,a])
 
     def take_action(self, a):
         # also take the action to the self.queue_self
@@ -74,21 +73,20 @@ class Agent(object):
             self.exp.reset()
             return 1
 
-
     @staticmethod
     def get_reward(a,b):
         d = {}
-        d[-1] = {}
         d[0] = {}
         d[1] = {}
-        d[-1][-1] = 0
-        d[-1][0] = -1
-        d[-1][1] = 1
-        d[-0][-1] = 1
-        d[-0][0] = -0
-        d[-0][1] = -1
-        d[1][-1] = -1
+        d[2] = {}
+        d[0][0] = 0
+        d[0][1] = -1
+        d[0][2] = 1
         d[1][0] = 1
-        d[1][1] = 0
+        d[1][1] = -0
+        d[1][2] = -1
+        d[2][0] = -1
+        d[2][1] = 1
+        d[2][2] = 0
 
         return d[a][b]
