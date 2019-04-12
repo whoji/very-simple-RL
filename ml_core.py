@@ -54,13 +54,13 @@ class Trainer(object):
             loss.backward()              # backpropagation, compute gradients
             self.optimizer.step()        # apply gradients
 
-            if verbose and t % 10 == 0:
+            if verbose and t % 1000 == 0:
                 # plot and show learning process
                 prediction = torch.max(out, 1)[1]
                 pred_y = prediction.data.numpy()
                 target_y = self.y.data.numpy()
                 self.accuracy = float((pred_y == target_y).astype(int).sum()) / float(target_y.size)
-                print('Accuracy=%.2f' % self.accuracy)
+                print('Accuracy=%.2f' % self.accuracy ,end = " | ")
 
     def inference(self, x):
         return self.net(x)
