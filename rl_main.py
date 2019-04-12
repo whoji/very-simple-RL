@@ -5,12 +5,15 @@ from agent import Agent
 N = 1000000
 IF_VERBO = True
 MEMORY_LEN = 5
+EPSILON = 0.3
+EPSILON_DECAY = 0.9999
 
 class RLController(object):
 
     def __init__(self):
         self.game = Game(memory_len = 5, money = 100)
-        self.agent = Agent(memory_len = 5, money = 100)
+        self.agent = Agent(memory_len = 5, money = 100, 
+            eps = EPSILON, eps_decay = EPSILON_DECAY)
 
         self.max_play_episodes = 10000
 

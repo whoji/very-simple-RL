@@ -4,7 +4,7 @@ from ml_core import Network, ExpReplay, Trainer
 
 class Agent(object):
     """This is the player"""
-    def __init__(self, memory_len, money):
+    def __init__(self, memory_len, money, eps, eps_decay):
         super(Agent, self).__init__()
         self.episodes = 0
         self.memory_len = memory_len
@@ -14,6 +14,8 @@ class Agent(object):
         self.net = Network(memory_len*2,5,3,3)
         self.exp = ExpReplay()
         self.trainer = Trainer(self.net)
+        self.eps = eps
+        self.eps_decay = eps_decay
 
         # initialize the queue
         self.queue_self = [random.choice([0,1,2]) for _ in range(memory_len)]
@@ -30,11 +32,13 @@ class Agent(object):
         # get action from the trainer
         x = self.get_x()
         a = self.net.predict(x)
-        a = self.random_action(a)
+        if random.uniform(0,1) < self.eps:
+            a = self.random_action(a)
+        self.eps = self.eps * self.eps_decay
         return a
 
     def random_action(self, a):
-        return random.choice([0,1,2,a,a])
+        return random.choice([0,1,2])
 
     def take_action(self, a):
         # also take the action to the self.queue_self
