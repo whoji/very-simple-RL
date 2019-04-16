@@ -26,9 +26,9 @@ class TestMLCore(unittest.TestCase):
         self.trainer.x = self.dataset['x']
         self.trainer.y = self.dataset['y']
 
-        self.assertTrue(self.trainer.accuracy ==  0.0)
-        self.trainer.train(1000)
-        self.assertTrue(self.trainer.accuracy >  0.9)
+        self.assertTrue(self.trainer.accuracy ==  0.0, "self.trainer.accuracy : %.3f" % self.trainer.accuracy)
+        self.trainer.train(2000, verbose=True)
+        self.assertTrue(self.trainer.accuracy >  0.9, "self.trainer.accuracy : %.3f" % self.trainer.accuracy)
 
     def test_network_multi_class(self):
         # make fake data
@@ -51,7 +51,7 @@ class TestMLCore(unittest.TestCase):
         self.trainer.y = self.dataset['y']
 
         self.assertTrue(self.trainer.accuracy ==  0.0)
-        self.trainer.train(1000)
+        self.trainer.train(2000, verbose=True)
         self.assertTrue(self.trainer.accuracy >  0.9)
 
 
