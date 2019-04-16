@@ -4,7 +4,7 @@ from ml_core import Network, ExpReplay, Trainer
 
 class Agent(object):
     """This is the player"""
-    def __init__(self, memory_len, money, eps, eps_decay):
+    def __init__(self, memory_len, money, eps, eps_decay, lr):
         super(Agent, self).__init__()
         self.episodes = 0
         self.memory_len = memory_len
@@ -13,7 +13,7 @@ class Agent(object):
         self.queue_enemy = []
         self.net = Network(memory_len*2,5,3,3)
         self.exp = ExpReplay()
-        self.trainer = Trainer(self.net)
+        self.trainer = Trainer(self.net, lr)
         self.eps = eps
         self.eps_decay = eps_decay
 

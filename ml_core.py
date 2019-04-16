@@ -31,13 +31,13 @@ class Network(torch.nn.Module):
 
 
 class Trainer(object):
-    def __init__(self, net):
+    def __init__(self, net, lr=0.02):
         if net:
             self.net = net
         else:
             self.net = Network(2, 10, 10, 3)
 
-        self.optimizer = torch.optim.SGD(self.net.parameters(), lr=0.02)
+        self.optimizer = torch.optim.SGD(self.net.parameters(), lr=lr)
         self.loss_func = torch.nn.CrossEntropyLoss() # MSELoss
         self.x = None
         self.y = None

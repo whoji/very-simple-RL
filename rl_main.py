@@ -4,17 +4,18 @@ from agent import Agent
 
 N = 1000000
 IF_VERBO = True
-MEMORY_LEN = 5
-EPSILON = 0.3
-EPSILON_DECAY = 0.9999
+MEMORY_LEN = 6
+EPSILON = 0.7
+EPSILON_DECAY = 0.99999
 TEMPO_WINDOW = 1000
+LEARNING_RATE = 0.02
 
 class RLController(object):
 
     def __init__(self):
         self.game = Game(memory_len = 5, money = 100)
         self.agent = Agent(memory_len = 5, money = 100, 
-            eps = EPSILON, eps_decay = EPSILON_DECAY)
+            eps = EPSILON, eps_decay = EPSILON_DECAY, lr = LEARNING_RATE)
 
         self.max_play_episodes = 10000
         self.agent_rewards = []

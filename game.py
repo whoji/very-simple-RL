@@ -57,7 +57,6 @@ class Game(object):
                 activation_0 -= i*(self.queue_self[i]-1)
                 activation_1 += i*(self.queue_enemy[i]-1)
         activation = abs(activation_0) + abs(activation_1)
-        #print(activation)
         return round(activation) % 3
 
     @staticmethod
