@@ -23,9 +23,6 @@ class Agent(object):
         
     def get_x(self):
         # get the x in good format for network (trainer)
-        # print(self.queue_self)
-        # print(self.queue_enemy)
-        # print(self.queue_self+self.queue_enemy)
         return self.net.to_torch_tensor(self.queue_self+self.queue_enemy)
 
     def get_action(self):

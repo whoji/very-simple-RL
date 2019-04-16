@@ -20,7 +20,6 @@ class RLController(object):
         self.agent_rewards = []
 
     def run(self, i=0):
-
         agent_action = self.agent.get_action()
         game_action = self.game.get_action()
         
@@ -34,17 +33,14 @@ class RLController(object):
 
         self.agent_rewards.append(Agent.get_reward(agent_action,game_action))
         if len(self.agent_rewards) == TEMPO_WINDOW:
-            print("Average reward in last %d games: %.3f" % (TEMPO_WINDOW, 
-                round(sum(self.agent_rewards)/TEMPO_WINDOW,3)))
+            print("Average (reward, winrate) in last %d games: (%.3f, %.3f)" 
+                % (TEMPO_WINDOW, round(sum(self.agent_rewards)/TEMPO_WINDOW,3),  
+                    round(sum([r for r in self.agent_rewards if r > 0])/TEMPO_WINDOW,3)))
             self.agent_rewards = []
 
     def start_everything(self):
         for i in range(N):
             self.run(i)
-
-            if i % round(N/100) == 0:
-                pass
-                # print winrate in last 100 game
 
 
 if __name__ == '__main__':
